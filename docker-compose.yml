@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: shaparak-postgres
+    environment:
+      POSTGRES_DB: shaparak
+      POSTGRES_USER: shaparak_admin
+      POSTGRES_PASSWORD: shaparak_2025
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      # - ./database/sample_data.sql:/docker-entrypoint-initdb.d/02-sample_data.sql
+    networks:
+      - shaparak-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shaparak_admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    container_name: shaparak-redis
+    command: redis-server --requirepass shaparak_redis_2024
+    networks:
+      - shaparak-network
+    volumes:
+      - redis_data:/data
+
+  portal-backend:
+    build: ./portal-backend
+    container_name: shaparak-portal-backend
+    environment:
+      DATABASE_URL: postgresql://shaparak_admin:shaparak_2025@postgres:5432/shaparak
+      REDIS_URL: redis://:shaparak_redis_2024@redis:6379/0
+      SECRET_KEY: shaparak_jwt_secret_key_2024_demo
+      JUPYTERHUB_API_URL: http://jupyterhub:8000/hub/api
+      JUPYTERHUB_API_TOKEN: demo-token-shaparak-2025
+    depends_on:
+      postgres:
+        condition: service_healthy
+      jupyterhub:
+        condition: service_started
+      redis:
+        condition: service_started
+    networks:
+      - shaparak-network
+    ports:
+      - "8001:8000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  jupyterhub:
+    build: ./jupyterhub
+    container_name: shaparak-jupyterhub
+    environment:
+      DOCKER_NETWORK_NAME: shaparak-network
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: shaparak
+      POSTGRES_USER: shaparak_admin
+      POSTGRES_PASSWORD: shaparak_2025
+      JUPYTERHUB_CRYPT_KEY: abc123def456ghi789jkl012mno345pq678rst901uvw234xyz567abc890def123
+      JUPYTERHUB_API_TOKEN: demo-token-shaparak-2025
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - jupyterhub_data:/srv/jupyterhub
+    networks:
+      - shaparak-network
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/hub/api"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  shaparak-network:
+    name: shaparak-network
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  jupyterhub_data:

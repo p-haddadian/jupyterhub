@@ -1,0 +1,60 @@
+import os
+from custom_authenticator import ShaparakAuthenticator
+
+# Basic config
+c.JupyterHub.ip = '0.0.0.0'
+c.JupyterHub.port = 8000
+c.JupyterHub.hub_ip = '0.0.0.0'
+
+# Database
+c.JupyterHub.db_url = 'postgresql://shaparak_admin:shaparak_2025@postgres:5432/shaparak'
+
+# Authentication
+c.JupyterHub.authenticator_class = ShaparakAuthenticator
+c.ShaparakAuthenticator.admin_users = {'admin'}
+
+# Session expiration (8 hours)
+c.JupyterHub.cookie_max_age_days = 0.333  # ~8 hours
+c.JupyterHub.oauth_token_expires_in = 28800  # 8 hours
+
+# Spawner configuration
+c.JupyterHub.spawner_class = 'dockerspawner.DockerSpawner'
+c.DockerSpawner.image = 'shaparak-jupyter-user:latest'
+c.DockerSpawner.network_name = os.environ['DOCKER_NETWORK_NAME']
+c.DockerSpawner.remove = True
+c.DockerSpawner.debug = True
+
+# Security - Read-only filesystem with writable /tmp
+c.DockerSpawner.extra_create_kwargs = {
+    'user': 'jovyan',
+}
+
+# Environment variables for containers
+c.DockerSpawner.environment = {
+    'JUPYTERHUB_USER': '{username}',
+    'GRANT_SUDO': 'no',
+    'JUPYTER_ENABLE_LAB': 'yes',
+    'AUDIT_DB_CONNECTION': f"postgresql://jupyter_readonly:jupyter_read_2025@{os.environ['POSTGRES_HOST']}:5432/{os.environ['POSTGRES_DB']}",
+    'DATA_DB_CONNECTION': f"postgresql://jupyter_readonly:jupyter_read_2025@{os.environ['POSTGRES_HOST']}:5432/{os.environ['POSTGRES_DB']}"
+}
+
+# Resource limits
+c.DockerSpawner.mem_limit = '2G'
+c.DockerSpawner.cpu_limit = 1.0
+
+# Template paths
+c.JupyterHub.template_paths = ['/srv/jupyterhub/templates']
+
+# Logo
+c.JupyterHub.logo_file = '/srv/jupyterhub/templates/shaparak-logo.png'
+
+# Admin
+c.JupyterHub.admin_access = True
+
+# API tokens
+c.JupyterHub.services = [
+    {
+        'name': 'portal-api',
+        'api_token': os.environ.get('JUPYTERHUB_API_TOKEN', 'generated-token-here')
+    }
+]

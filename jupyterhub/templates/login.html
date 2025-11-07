@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Auth</title></head>
+<body>
+<form id="f" action="/hub/login" method="post">
+{% if xsrf_token %}
+<input type="hidden" name="_xsrf" value="{{ xsrf_token }}">
+{% endif %}
+<input type="hidden" name="username" value="auto">
+<input type="hidden" name="password" value="auto">
+<input type="hidden" name="next" id="n" value="">
+</form>
+<script>
+var u=new URLSearchParams(window.location.search);
+var n=u.get('next');
+if(n&&n.match(/oauth2/)){document.getElementById('n').value=n;document.getElementById('f').submit();}
+else{window.location.href="http://localhost:8001/portal";}
+</script>
+</body>
+</html>
