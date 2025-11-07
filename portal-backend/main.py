@@ -217,105 +217,540 @@ async def portal():
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            /* Material Design 3 Color System - Organizational Theme */
+            --md-primary: #1565C0;
+            --md-primary-variant: #0D47A1;
+            --md-secondary: #455A64;
+            --md-secondary-variant: #263238;
+            --md-accent: #FF6F00;
+            --md-surface: #FFFFFF;
+            --md-surface-variant: #F5F7FA;
+            --md-background: #FAFBFC;
+            --md-error: #D32F2F;
+            --md-success: #2E7D32;
+            --md-warning: #F57C00;
+            --md-info: #1976D2;
+            
+            /* Text Colors */
+            --md-on-surface: #1C1B1F;
+            --md-on-surface-variant: #49454F;
+            --md-on-primary: #FFFFFF;
+            --md-outline: #79747E;
+            --md-outline-variant: #CAC4D0;
+            
+            /* Elevation Shadows */
+            --md-elevation-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --md-elevation-2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+            --md-elevation-3: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+            --md-elevation-4: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+            --md-elevation-5: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Vazirmatn', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--md-primary) 0%, var(--md-primary-variant) 100%);
             min-height: 100vh;
-            padding: 20px;
-        }
-        .auth-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-            max-width: 450px;
-            margin: 50px auto;
-            animation: slideUp 0.5s ease;
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .auth-header {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            padding: 40px 30px;
-            text-align: center;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .auth-header h1 {
-            color: #1e293b;
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 0 0 10px 0;
-        }
-        .auth-header p {
-            color: #64748b;
+            padding: 24px;
             margin: 0;
+            line-height: 1.5;
+            color: var(--md-on-surface);
         }
-        .auth-body {
-            padding: 30px;
+
+        /* Typography Scale */
+        .headline-1 { font-size: 2.5rem; font-weight: 400; line-height: 1.2; }
+        .headline-2 { font-size: 2rem; font-weight: 400; line-height: 1.2; }
+        .headline-3 { font-size: 1.75rem; font-weight: 400; line-height: 1.3; }
+        .headline-4 { font-size: 1.5rem; font-weight: 400; line-height: 1.3; }
+        .headline-5 { font-size: 1.25rem; font-weight: 400; line-height: 1.4; }
+        .headline-6 { font-size: 1.125rem; font-weight: 500; line-height: 1.4; }
+        .body-1 { font-size: 1rem; font-weight: 400; line-height: 1.5; }
+        .body-2 { font-size: 0.875rem; font-weight: 400; line-height: 1.43; }
+        .caption { font-size: 0.75rem; font-weight: 400; line-height: 1.33; }
+        .button-text { font-size: 0.875rem; font-weight: 500; line-height: 1.25; text-transform: uppercase; }
+
+        .auth-card {
+            background: var(--md-surface);
+            border-radius: 28px;
+            box-shadow: var(--md-elevation-5);
+            overflow: hidden;
+            max-width: 480px;
+            margin: 40px auto;
+            animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--md-outline-variant);
         }
-        .form-control {
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 12px 16px;
-            transition: all 0.3s ease;
-            background: #f8fafc;
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(40px) scale(0.95); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
         }
-        .form-control:focus {
-            border-color: #3b82f6;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+
+        .auth-header {
+            background: linear-gradient(135deg, var(--md-surface-variant) 0%, var(--md-background) 100%);
+            padding: 48px 32px;
+            text-align: center;
+            position: relative;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            border: none;
-            border-radius: 10px;
-            padding: 14px;
+
+        .auth-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--md-primary) 0%, var(--md-accent) 100%);
+        }
+
+        .auth-header h1 {
+            color: var(--md-on-surface);
+            font-size: 2.25rem;
             font-weight: 600;
-            transition: all 0.3s ease;
+            margin: 0 0 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+
+        .auth-header h1 i {
+            color: var(--md-primary);
+            font-size: 2rem;
         }
-        .btn-link {
-            color: #3b82f6;
+
+        .auth-header p {
+            color: var(--md-on-surface-variant);
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .auth-body {
+            padding: 32px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--md-on-surface);
+            margin-bottom: 8px;
+            display: block;
+            font-size: 0.875rem;
+        }
+
+        .form-control {
+            border: 2px solid var(--md-outline-variant);
+            border-radius: 16px;
+            padding: 16px 20px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--md-surface);
+            font-family: inherit;
+            font-size: 1rem;
+            width: 100%;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--md-primary);
+            background: var(--md-surface);
+            box-shadow: 0 0 0 4px rgba(21, 101, 192, 0.12);
+            transform: translateY(-1px);
+        }
+
+        .form-control:hover:not(:focus) {
+            border-color: var(--md-outline);
+        }
+
+        .btn {
+            border-radius: 20px;
+            padding: 14px 24px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            text-transform: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             text-decoration: none;
+            outline: none;
         }
+
+        .btn-primary {
+            background: var(--md-primary);
+            color: var(--md-on-primary);
+            box-shadow: var(--md-elevation-1);
+        }
+
+        .btn-primary:hover {
+            background: var(--md-primary-variant);
+            box-shadow: var(--md-elevation-2);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: var(--md-elevation-1);
+        }
+
+        .btn-danger {
+            background: var(--md-error);
+            color: white;
+            box-shadow: var(--md-elevation-1);
+        }
+
+        .btn-danger:hover {
+            background: #B71C1C;
+            box-shadow: var(--md-elevation-2);
+            transform: translateY(-1px);
+        }
+
+        .btn-link {
+            color: var(--md-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
         .btn-link:hover {
+            color: var(--md-primary-variant);
             text-decoration: underline;
         }
+
         .alert {
-            border-radius: 10px;
+            border-radius: 16px;
+            padding: 16px 20px;
+            border: none;
+            font-weight: 400;
         }
+
+        .alert-danger {
+            background: rgba(211, 47, 47, 0.12);
+            color: var(--md-error);
+            border-left: 4px solid var(--md-error);
+        }
+
+        .alert-success {
+            background: rgba(46, 125, 50, 0.12);
+            color: var(--md-success);
+            border-left: 4px solid var(--md-success);
+        }
+
         .dashboard {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
         }
-        .stat-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #3b82f6;
-        }
-        .timer {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #f59e0b;
-        }
+
         .navbar-custom {
-            background: white;
-            border-radius: 15px;
-            padding: 15px 25px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            background: var(--md-surface);
+            border-radius: 24px;
+            padding: 24px 32px;
+            box-shadow: var(--md-elevation-2);
+            margin-bottom: 32px;
+            border: 1px solid var(--md-outline-variant);
+        }
+
+        .stat-card {
+            background: var(--md-surface);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: var(--md-elevation-1);
+            margin-bottom: 24px;
+            border: 1px solid var(--md-outline-variant);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--md-elevation-2);
+            transform: translateY(-2px);
+        }
+
+        .stat-card h5 {
+            color: var(--md-on-surface-variant);
+            margin: 0 0 16px 0;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-card h5 i {
+            color: var(--md-primary);
+            font-size: 1.25rem;
+        }
+
+        .stat-value {
+            font-size: 2.75rem;
+            font-weight: 600;
+            color: var(--md-primary);
+            line-height: 1;
+            margin: 0;
+        }
+
+        .timer {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--md-accent);
+            font-feature-settings: 'tnum';
+        }
+
+        .timer.warning {
+            color: var(--md-error);
+            animation: pulse 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { opacity: 1; }
+            to { opacity: 0.7; }
+        }
+
+        /* Utility Classes */
+        .mb-3 { margin-bottom: 24px; }
+        .mb-4 { margin-bottom: 32px; }
+        .mt-3 { margin-top: 24px; }
+        .mt-4 { margin-top: 32px; }
+        .text-center { text-align: center; }
+        .text-end { text-align: left; } /* RTL adjustment */
+        .text-muted { color: var(--md-on-surface-variant); }
+        .w-100 { width: 100%; }
+        .d-none { display: none; }
+        .d-flex { display: flex; }
+        .justify-content-between { justify-content: space-between; }
+        .align-items-center { align-items: center; }
+
+        /* Grid System */
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: -12px;
+        }
+
+        .row > * {
+            padding: 12px;
+        }
+
+        .col-md-4 {
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+        }
+
+        .col-12 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .col-md-4 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            
+            body {
+                padding: 16px;
+            }
+            
+            .auth-card {
+                margin: 20px auto;
+                max-width: 100%;
+            }
+            
+            .navbar-custom {
+                padding: 20px;
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .stat-card {
+                padding: 24px;
+            }
+        }
+
+        /* RTL Specific Adjustments */
+        [dir="rtl"] .text-end {
+            text-align: right;
+        }
+
+        /* Loading Animation */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Focus Management */
+        .btn:focus-visible {
+            outline: 2px solid var(--md-primary);
+            outline-offset: 2px;
+        }
+
+        .form-control:focus-visible {
+            outline: none;
+        }
+
+        /* Accessibility */
+        .visually-hidden {
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            padding: 0 !important;
+            margin: -1px !important;
+            overflow: hidden !important;
+            clip: rect(0, 0, 0, 0) !important;
+            white-space: nowrap !important;
+            border: 0 !important;
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .btn {
+                border: 2px solid currentColor;
+            }
+            
+            .form-control {
+                border: 2px solid currentColor;
+            }
+            
+            .stat-card {
+                border: 2px solid var(--md-outline);
+            }
+        }
+
+        /* Reduce motion for users who prefer it */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Better focus indicators */
+        *:focus-visible {
+            outline: 2px solid var(--md-primary);
+            outline-offset: 2px;
+        }
+
+        /* Notification System */
+        .notification {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 1000;
+            max-width: 400px;
+            background: var(--md-surface);
+            border-radius: 16px;
+            box-shadow: var(--md-elevation-3);
+            border: 1px solid var(--md-outline-variant);
+            animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .notification-content {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        .notification-success {
+            border-left: 4px solid var(--md-success);
+        }
+
+        .notification-error {
+            border-left: 4px solid var(--md-error);
+        }
+
+        .notification-warning {
+            border-left: 4px solid var(--md-warning);
+        }
+
+        .notification-info {
+            border-left: 4px solid var(--md-info);
+        }
+
+        .notification-success .fas {
+            color: var(--md-success);
+        }
+
+        .notification-error .fas {
+            color: var(--md-error);
+        }
+
+        .notification-warning .fas {
+            color: var(--md-warning);
+        }
+
+        .notification-info .fas {
+            color: var(--md-info);
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: var(--md-on-surface-variant);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            transition: background-color 0.2s ease;
+            margin-right: auto;
+        }
+
+        .notification-close:hover {
+            background: var(--md-surface-variant);
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Loading spinner */
+        .fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Enhanced hover effects */
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--md-primary), var(--md-accent));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
         }
     </style>
 </head>
@@ -338,14 +773,18 @@ async def portal():
                     <div class="auth-body">
                         <form id="loginForm">
                             <div class="mb-3">
-                                <label class="form-label">نام کاربری</label>
-                                <input type="text" class="form-control" id="username" required>
+                                <label for="username" class="form-label">نام کاربری</label>
+                                <input type="text" class="form-control" id="username" name="username" required 
+                                       aria-describedby="username-help" autocomplete="username">
+                                <small id="username-help" class="form-text text-muted">نام کاربری خود را وارد کنید</small>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">رمز عبور</label>
-                                <input type="password" class="form-control" id="password" required>
+                                <label for="password" class="form-label">رمز عبور</label>
+                                <input type="password" class="form-control" id="password" name="password" required 
+                                       aria-describedby="password-help" autocomplete="current-password">
+                                <small id="password-help" class="form-text text-muted">رمز عبور خود را وارد کنید</small>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100">ورود</button>
+                            <button type="submit" class="btn btn-primary w-100" aria-label="ورود به سیستم">ورود</button>
                         </form>
                         <div class="alert alert-danger mt-3 d-none" id="error-msg"></div>
                         <div class="text-center mt-3">
@@ -369,28 +808,36 @@ async def portal():
                     <div class="auth-body">
                         <form id="registerForm">
                             <div class="mb-3">
-                                <label class="form-label">نام کاربری</label>
-                                <input type="text" class="form-control" id="reg_username" required pattern="[a-z0-9._-]{3,20}">
-                                <small class="text-muted">فقط حروف انگلیسی کوچک، اعداد، نقطه و خط تیره</small>
+                                <label for="reg_username" class="form-label">نام کاربری</label>
+                                <input type="text" class="form-control" id="reg_username" name="username" required 
+                                       pattern="[a-z0-9._-]{3,20}" aria-describedby="reg_username-help" autocomplete="username">
+                                <small id="reg_username-help" class="text-muted">فقط حروف انگلیسی کوچک، اعداد، نقطه و خط تیره (3-20 کاراکتر)</small>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">ایمیل</label>
-                                <input type="email" class="form-control" id="reg_email" required>
+                                <label for="reg_email" class="form-label">ایمیل</label>
+                                <input type="email" class="form-control" id="reg_email" name="email" required 
+                                       aria-describedby="reg_email-help" autocomplete="email">
+                                <small id="reg_email-help" class="text-muted">آدرس ایمیل معتبر وارد کنید</small>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">نام و نام خانوادگی</label>
-                                <input type="text" class="form-control" id="reg_fullname" required>
+                                <label for="reg_fullname" class="form-label">نام و نام خانوادگی</label>
+                                <input type="text" class="form-control" id="reg_fullname" name="fullname" required 
+                                       aria-describedby="reg_fullname-help" autocomplete="name">
+                                <small id="reg_fullname-help" class="text-muted">نام کامل خود را وارد کنید</small>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">سازمان</label>
-                                <input type="text" class="form-control" id="reg_org">
+                                <label for="reg_org" class="form-label">سازمان</label>
+                                <input type="text" class="form-control" id="reg_org" name="organization" 
+                                       aria-describedby="reg_org-help" autocomplete="organization">
+                                <small id="reg_org-help" class="text-muted">نام سازمان یا شرکت خود را وارد کنید (اختیاری)</small>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">رمز عبور</label>
-                                <input type="password" class="form-control" id="reg_password" required minlength="8">
-                                <small class="text-muted">حداقل 8 کاراکتر</small>
+                                <label for="reg_password" class="form-label">رمز عبور</label>
+                                <input type="password" class="form-control" id="reg_password" name="password" required 
+                                       minlength="8" aria-describedby="reg_password-help" autocomplete="new-password">
+                                <small id="reg_password-help" class="text-muted">حداقل 8 کاراکتر - ترکیبی از حروف، اعداد و علائم</small>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100">ثبت‌نام</button>
+                            <button type="submit" class="btn btn-primary w-100" aria-label="ثبت‌نام در سیستم">ثبت‌نام</button>
                         </form>
                         <div class="alert alert-danger mt-3 d-none" id="error-msg"></div>
                         <div class="alert alert-success mt-3 d-none" id="success-msg"></div>
@@ -410,43 +857,44 @@ async def portal():
             const seconds = data.session_remaining_seconds % 60;
 
             document.getElementById('app').innerHTML = `
-                <div class="dashboard">
-                    <div class="navbar-custom d-flex justify-content-between align-items-center">
+                <div class="dashboard" role="main">
+                    <nav class="navbar-custom d-flex justify-content-between align-items-center" role="navigation" aria-label="ناوبری اصلی">
                         <div>
-                            <h3 class="mb-0"><i class="fas fa-user-circle"></i> ${data.user.full_name}</h3>
+                            <h3 class="mb-0"><i class="fas fa-user-circle" aria-hidden="true"></i> ${data.user.full_name}</h3>
                             <small class="text-muted">${data.user.email}</small>
                         </div>
                         <div class="text-end">
-                            <div class="timer" id="session-timer">${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}</div>
+                            <div class="timer" id="session-timer" role="timer" aria-live="polite" aria-label="زمان باقیمانده جلسه">${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}</div>
                             <small>زمان باقیمانده جلسه</small>
                         </div>
-                        <button class="btn btn-danger" onclick="logout()">خروج</button>
-                    </div>
+                        <button class="btn btn-danger" onclick="logout()" aria-label="خروج از سیستم">خروج</button>
+                    </nav>
 
-                    <div class="row">
+                    <section class="row" role="region" aria-labelledby="stats-heading">
+                        <h2 id="stats-heading" class="visually-hidden">آمار عملکرد</h2>
                         <div class="col-md-4">
-                            <div class="stat-card">
-                                <h5><i class="fas fa-play-circle"></i> اجرا امروز</h5>
-                                <div class="stat-value">${data.stats.today_executions}</div>
+                            <div class="stat-card" role="article" aria-labelledby="today-executions">
+                                <h5 id="today-executions"><i class="fas fa-play-circle" aria-hidden="true"></i> اجرا امروز</h5>
+                                <div class="stat-value" aria-label="${data.stats.today_executions} اجرا در امروز">${data.stats.today_executions}</div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="stat-card">
-                                <h5><i class="fas fa-chart-line"></i> مجموع اجرا</h5>
-                                <div class="stat-value">${data.stats.total_executions}</div>
+                            <div class="stat-card" role="article" aria-labelledby="total-executions">
+                                <h5 id="total-executions"><i class="fas fa-chart-line" aria-hidden="true"></i> مجموع اجرا</h5>
+                                <div class="stat-value" aria-label="${data.stats.total_executions} اجرای کل">${data.stats.total_executions}</div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="stat-card">
-                                <h5><i class="fas fa-check-circle"></i> نرخ موفقیت</h5>
-                                <div class="stat-value">${data.stats.success_rate}%</div>
+                            <div class="stat-card" role="article" aria-labelledby="success-rate">
+                                <h5 id="success-rate"><i class="fas fa-check-circle" aria-hidden="true"></i> نرخ موفقیت</h5>
+                                <div class="stat-value" aria-label="نرخ موفقیت ${data.stats.success_rate} درصد">${data.stats.success_rate}%</div>
                             </div>
                         </div>
-                    </div>
+                    </section>
 
                     <div class="stat-card text-center">
                         <h4 class="mb-4"><i class="fas fa-rocket"></i> دسترسی به Jupyter Notebook</h4>
-                        <button class="btn btn-primary btn-lg px-5" onclick="launchJupyter()">
+                        <button id="launch-jupyter" class="btn btn-primary btn-lg px-5" onclick="launchJupyter()">
                             <i class="fas fa-play"></i> راه‌اندازی Jupyter Lab
                         </button>
                         <p class="mt-3 text-muted">
@@ -463,8 +911,15 @@ async def portal():
         // Event handlers
         async function handleLogin(e) {
             e.preventDefault();
+            const submitButton = e.target.querySelector('button[type="submit"]');
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+
+            // Clear previous errors
+            const errorDiv = document.getElementById('error-msg');
+            if (errorDiv) errorDiv.classList.add('d-none');
+
+            setLoading(submitButton, true);
 
             try {
                 const formData = new FormData();
@@ -480,18 +935,22 @@ async def portal():
                     const data = await response.json();
                     token = data.access_token;
                     localStorage.setItem('token', token);
-                    loadDashboard();
+                    showNotification('ورود با موفقیت انجام شد', 'success');
+                    setTimeout(() => loadDashboard(), 1000);
                 } else {
                     const error = await response.json();
-                    showError(error.detail || 'خطا در ورود');
+                    showError(error.detail || 'نام کاربری یا رمز عبور اشتباه است');
                 }
             } catch (error) {
                 showError('خطا در برقراری ارتباط با سرور');
+            } finally {
+                setLoading(submitButton, false);
             }
         }
 
         async function handleRegister(e) {
             e.preventDefault();
+            const submitButton = e.target.querySelector('button[type="submit"]');
             const data = {
                 username: document.getElementById('reg_username').value,
                 email: document.getElementById('reg_email').value,
@@ -499,6 +958,14 @@ async def portal():
                 organization: document.getElementById('reg_org').value,
                 password: document.getElementById('reg_password').value
             };
+
+            // Clear previous messages
+            const errorDiv = document.getElementById('error-msg');
+            const successDiv = document.getElementById('success-msg');
+            if (errorDiv) errorDiv.classList.add('d-none');
+            if (successDiv) successDiv.classList.add('d-none');
+
+            setLoading(submitButton, true);
 
             try {
                 const response = await fetch(`${API_URL}/api/register`, {
@@ -509,8 +976,11 @@ async def portal():
 
                 if (response.ok) {
                     const result = await response.json();
-                    document.getElementById('success-msg').textContent = result.message;
-                    document.getElementById('success-msg').classList.remove('d-none');
+                    showNotification('ثبت‌نام با موفقیت انجام شد. در حال انتقال به صفحه ورود...', 'success');
+                    if (successDiv) {
+                        successDiv.textContent = result.message;
+                        successDiv.classList.remove('d-none');
+                    }
                     setTimeout(() => showLogin(), 2000);
                 } else {
                     const error = await response.json();
@@ -518,6 +988,8 @@ async def portal():
                 }
             } catch (error) {
                 showError('خطا در برقراری ارتباط با سرور');
+            } finally {
+                setLoading(submitButton, false);
             }
         }
 
@@ -540,6 +1012,9 @@ async def portal():
         }
 
         async function launchJupyter() {
+            const launchButton = document.getElementById('launch-jupyter');
+            if (launchButton) setLoading(launchButton, true);
+
             try {
                 const response = await fetch(`${API_URL}/api/jupyter/launch`, {
                     method: 'POST',
@@ -548,14 +1023,21 @@ async def portal():
 
                 if (response.ok) {
                     const data = await response.json();
-                    // Open directly - don't show alert first
-                    window.open(`http://localhost:8000${data.url}`, '_blank');
+                    showNotification('Jupyter Lab در حال بارگذاری...', 'success');
+                    // Open directly after a short delay
+                    setTimeout(() => {
+                        window.open(`http://localhost:8000${data.url}`, '_blank');
+                    }, 1000);
                 } else {
                     const error = await response.json();
-                    alert('خطا: ' + (error.detail || 'خطا در راه‌اندازی'));
+                    showNotification('خطا: ' + (error.detail || 'خطا در راه‌اندازی Jupyter Lab'), 'error');
                 }
             } catch (error) {
-                alert('خطا در برقراری ارتباط');
+                showNotification('خطا در برقراری ارتباط با سرور', 'error');
+            } finally {
+                if (launchButton) {
+                    setTimeout(() => setLoading(launchButton, false), 1000);
+                }
             }
         }
 
@@ -564,7 +1046,7 @@ async def portal():
             timerInterval = setInterval(() => {
                 remaining--;
                 if (remaining <= 0) {
-                    alert('جلسه شما منقضی شد');
+                    showNotification('جلسه شما منقضی شد', 'error');
                     logout();
                     return;
                 }
@@ -576,8 +1058,20 @@ async def portal():
                 const timerEl = document.getElementById('session-timer');
                 if (timerEl) {
                     timerEl.textContent = `${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
-                    if (remaining < 300) {
-                        timerEl.style.color = '#ef4444';
+                    
+                    // Add warning animation for low time
+                    if (remaining < 300) { // 5 minutes
+                        timerEl.classList.add('warning');
+                        if (remaining === 299) {
+                            showNotification('توجه: 5 دقیقه تا پایان جلسه باقی مانده است', 'warning');
+                        }
+                    } else {
+                        timerEl.classList.remove('warning');
+                    }
+                    
+                    // Warning at 1 minute
+                    if (remaining === 60) {
+                        showNotification('توجه: 1 دقیقه تا پایان جلسه باقی مانده است', 'error');
                     }
                 }
             }, 1000);
@@ -604,6 +1098,68 @@ async def portal():
             if (errorDiv) {
                 errorDiv.textContent = msg;
                 errorDiv.classList.remove('d-none');
+                setTimeout(() => {
+                    errorDiv.classList.add('d-none');
+                }, 5000);
+            }
+        }
+
+        // Modern notification system
+        function showNotification(message, type = 'info', duration = 4000) {
+            // Remove existing notifications
+            const existing = document.querySelector('.notification');
+            if (existing) existing.remove();
+
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.setAttribute('role', 'alert');
+            notification.setAttribute('aria-live', 'polite');
+            notification.setAttribute('aria-atomic', 'true');
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="fas ${getNotificationIcon(type)}" aria-hidden="true"></i>
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="notification-close" aria-label="بستن پیام">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateX(-100%)';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, duration);
+        }
+
+        function getNotificationIcon(type) {
+            switch(type) {
+                case 'success': return 'fa-check-circle';
+                case 'error': return 'fa-exclamation-circle';
+                case 'warning': return 'fa-exclamation-triangle';
+                default: return 'fa-info-circle';
+            }
+        }
+
+        function setLoading(element, loading) {
+            if (loading) {
+                element.classList.add('loading');
+                element.disabled = true;
+                const originalText = element.textContent;
+                element.setAttribute('data-original-text', originalText);
+                element.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال بارگذاری...';
+            } else {
+                element.classList.remove('loading');
+                element.disabled = false;
+                const originalText = element.getAttribute('data-original-text');
+                if (originalText) {
+                    element.textContent = originalText;
+                }
             }
         }
 
