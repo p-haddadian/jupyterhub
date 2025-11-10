@@ -212,7 +212,7 @@ async def portal():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پورتال شاپرک - پلتفرم تحلیل داده</title>
+    <title>سامانه سندباکس داده شاپرک</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -768,7 +768,7 @@ async def portal():
                 <div class="auth-card">
                     <div class="auth-header">
                         <h1><i class="fas fa-shield-alt"></i> شاپرک</h1>
-                        <p>پلتفرم تحلیل داده امن</p>
+                        <p>سامانه سندباکس داده شاپرک</p>
                     </div>
                     <div class="auth-body">
                         <form id="loginForm">
@@ -893,9 +893,9 @@ async def portal():
                     </section>
 
                     <div class="stat-card text-center">
-                        <h4 class="mb-4"><i class="fas fa-rocket"></i> دسترسی به Jupyter Notebook</h4>
+                        <h4 class="mb-4"><i class="fas fa-rocket"></i> دسترسی به محیط محاسباتی پایتون</h4>
                         <button id="launch-jupyter" class="btn btn-primary btn-lg px-5" onclick="launchJupyter()">
-                            <i class="fas fa-play"></i> راه‌اندازی Jupyter Lab
+                            <i class="fas fa-play"></i> راه اندازی محیط محاسباتی
                         </button>
                         <p class="mt-3 text-muted">
                             <i class="fas fa-exclamation-triangle"></i>
